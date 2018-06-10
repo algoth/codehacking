@@ -3,6 +3,8 @@
 @section('content')
   @if(Session::has('updated_post'))
     <p class="bg-info">{{session('updated_post')}}</p>
+  @elseif(Session::has('deleted_post'))
+    <p class="bg-danger">{{session('deleted_post')}}</p>
   @endif
   <h1>Posts</h1>
   <table class="table table-hover">

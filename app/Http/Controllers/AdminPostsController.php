@@ -108,7 +108,7 @@ class AdminPostsController extends Controller
     public function update(PostsEditRequest $request, $id)
     {
         //
-        $post = Post::findOrFail($id);
+        // $post = Post::findOrFail($id);
         $input = $request->all();
         $input['user_id'] = Auth::user()->id;
         if ($file = $request->file('photo_id')) {
@@ -117,8 +117,8 @@ class AdminPostsController extends Controller
             $photo = Photo::create(['file'=>$name]);
             $input['photo_id'] = $photo->id;
         }
-
-        $post->update($input);
+        Auth::user()->posts()->whereId($id)->first()->update($input);
+        // $post->update($input);
         Session::flash('updated_post', 'the post has been updated');
         return redirect('/admin/posts');
     }
@@ -132,5 +132,13 @@ class AdminPostsController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::findOrFail($id);
+        if ($post->photo_id) {
+            unlink(public_path().$post->photo->file);
+        }
+        $post->delete();
+        Session::flash('deleted_post', 'The post has been deleted');
+        return redirect('/admin/posts');
+
     }
 }
