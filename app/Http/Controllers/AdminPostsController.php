@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use App\Post;
 use App\Photo;
 use App\Http\Requests\PostsRequest;
+use App\Http\Requests\PostsEditRequest;
+use App\Category;
 
 class AdminPostsController extends Controller
 {
@@ -31,7 +33,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        $categories = Category::pluck('name', 'id')->all();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -91,7 +94,8 @@ class AdminPostsController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::pluck('name', 'id')->all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -101,7 +105,7 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostsRequest $request, $id)
+    public function update(PostsEditRequest $request, $id)
     {
         //
         $post = Post::findOrFail($id);
