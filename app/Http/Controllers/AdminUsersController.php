@@ -10,7 +10,6 @@ use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 use App\Photo;
 
-
 class AdminUsersController extends Controller
 {
     /**
@@ -35,7 +34,6 @@ class AdminUsersController extends Controller
         //
         $roles = Role::pluck('name', 'id')->all();
         return view('admin.users.create', compact('roles'));
-
     }
 
     /**
@@ -49,21 +47,20 @@ class AdminUsersController extends Controller
         //
         // return $request->all();
         //
-        if(trim($request->password) == ''){
-          $input = $request->except('password');
-        } else{
-
+        if (trim($request->password) == '') {
+            $input = $request->except('password');
+        } else {
             $input = $request->all();
             $input['password'] = bcrypt($request->password);
         }
 
 
 
-        if($file = $request->file('photo_id')){
-          $name = time().$file->getClientOriginalName();
-          $file->move('images', $name);
-          $photo = Photo::create(['file'=>$name]);
-          $input['photo_id'] = $photo->id;
+        if ($file = $request->file('photo_id')) {
+            $name = time().$file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file'=>$name]);
+            $input['photo_id'] = $photo->id;
         }
 
 
@@ -72,7 +69,6 @@ class AdminUsersController extends Controller
         // User::create($request->all());
         //
         return redirect('/admin/users');
-
     }
 
     /**
@@ -85,8 +81,6 @@ class AdminUsersController extends Controller
     {
         //
         return view('admin.users.show');
-
-
     }
 
     /**
@@ -101,7 +95,6 @@ class AdminUsersController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::pluck('name', 'id')->all();
         return view('admin.users.edit', compact(['user', 'roles']));
-
     }
 
     /**
@@ -117,19 +110,18 @@ class AdminUsersController extends Controller
 
         // return $request->all();
         $user = User::findOrFail($id);
-        if(trim($request->password) == ''){
-          $input = $request->except('password');
-        } else{
-
+        if (trim($request->password) == '') {
+            $input = $request->except('password');
+        } else {
             $input = $request->all();
             $input['password'] = bcrypt($request->password);
         }
 
-        if($file = $request->file('photo_id')){
-          $name = time().$file->getClientOriginalName();
-          $file->move('images', $name);
-          $photo = Photo::create(['file'=>$name]);
-          $input['photo_id'] = $photo->id;
+        if ($file = $request->file('photo_id')) {
+            $name = time().$file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file'=>$name]);
+            $input['photo_id'] = $photo->id;
         }
 
         $user->update($input);
@@ -150,13 +142,12 @@ class AdminUsersController extends Controller
         $user = User::findOrFail($id);
 
         //removing photo from public/images directory
-        if($user->photo_id){
-          unlink(public_path().$user->photo->file);
+        if ($user->photo_id) {
+            unlink(public_path().$user->photo->file);
         }
         $user->delete();
         Session::flash('deleted_user', 'The user has been deleted');
 
         return redirect('/admin/users');
-
     }
 }
