@@ -6581,4 +6581,20 @@ button.close {
     display: none !important;
   }
 }
+
+@media (min-width: 1200px){
+.col-lg-8 {
+  padding-top: 50px;
+  }
+}
 /*# sourceMappingURL=bootstrap.css.map */
+
+#nested-comment{
+  margin-top: 40px;
+
+}
+
+.comment-reply{
+  display: none;
+
+}
