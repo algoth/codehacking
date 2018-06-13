@@ -22,21 +22,47 @@
     <hr>
 
     <!-- Preview Image -->
-    <img class="img-responsive" src="{{$post->photo->file}}" alt="">
+    <img class="img-responsive" src="{{$post->photo ? $post->photo->file : $post->photoPlaceholder()}}" alt="">
 
     <hr>
 
     <!-- Post Content -->
-    <p class="lead">{{$post->body}}</p>
-
+    <p>{!! $post->body !!}</p>
 
     <hr>
 
+
+    <div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gamexs-1.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<script id="dsq-count-scr" src="//gamexs-1.disqus.com/count.js" async></script>
+
+
+    {{--
+
     @if(Session::has('comment_msg'))
       <p class="bg-info">{{session('comment_msg')}}</p>
-    @endif
+    @endif --}}
 
-    <!-- Blog Comments -->
+    {{-- <!-- Blog Comments -->
   @if(Auth::check())
     <!-- Comments Form -->
     <div class="well">
@@ -46,7 +72,7 @@
         {!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
         <div class="form-group">
           <input type="hidden" name="post_id" value="{{$post->id}}">
-          {{-- {!! Form::label('body', 'Body :') !!} --}}
+
           {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
         </div>
         <div class="form-group">
@@ -56,15 +82,15 @@
 
     </div>
   @endif
-    <hr>
+    <hr> --}}
 
-    <!-- Posted Comments -->
+    {{-- <!-- Posted Comments -->
 @if($comments)
   @foreach ($comments as $comment)
     <!-- Comment -->
     <div class="media">
         <a class="pull-left" href="#">
-            <img height="64"class="media-object" src="{{$comment->photo}}" alt="">
+            <img height="64"class="media-object" src="{{Auth::user()->gravatar}}" alt="">
         </a>
         <div class="media-body">
             <h4 class="media-heading">{{$comment->author}}
@@ -110,7 +136,7 @@
         </div>
     </div>
   @endforeach
-@endif
+@endif --}}
 
 @stop
 

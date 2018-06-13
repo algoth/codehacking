@@ -22,7 +22,7 @@
         <td>{{$reply->author}}</td>
         <td>{{$reply->email}}</td>
         <td>{{$reply->body}}</td>
-        <td><a href="{{route('home.post',$reply->comment->post->id)}}">View Post</a></td>
+        <td><a href="{{route('home.post',$reply->comment->post->slug)}}">View Post</a></td>
         <td>
           @if($reply->is_active == 1)
               {!! Form::open(['method'=>'PATCH', 'action'=>['CommentRepliesController@update', $reply->id]]) !!}

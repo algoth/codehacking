@@ -21,7 +21,7 @@ class AdminPostsController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        $posts = Post::paginate(3);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -110,7 +110,7 @@ class AdminPostsController extends Controller
         //
         // $post = Post::findOrFail($id);
         $input = $request->all();
-        $input['user_id'] = Auth::user()->id;
+        // $input['user_id'] = Auth::user()->id;
         if ($file = $request->file('photo_id')) {
             $name = time().$file->getClientOriginalName();
             $file->move('images', $name);
@@ -142,9 +142,9 @@ class AdminPostsController extends Controller
 
     }
 
-    public function post($id){
+    public function post($slug){
 
-      $post = Post::findOrFail($id);
+      $post = Post::findBySlugOrFail($slug);
       $categories = Category::all();
       $comments = $post->comments()->whereIsActive(1)->get();
       return view('post', compact('post', 'categories', 'comments'));
